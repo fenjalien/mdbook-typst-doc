@@ -13,12 +13,8 @@ jobs:
       id-token: write # To update the deployment status
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - uses: actions-rs/cargo@v2
-        with:
-          command: build
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build
       - uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: "0.4.37"
