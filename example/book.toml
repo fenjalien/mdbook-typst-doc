@@ -13,7 +13,7 @@ additional-css = ["typst-doc.css"]
 
 [preprocessor.typst-doc]
 # If you have built locally (`cargo build`)
-command = "../target/debug/mdbook-typst-doc.exe"
+command = "../target/debug/mdbook-typst-doc"
 # If you have installed from the git repository
 # command = "mdbook-typst-doc"
 
