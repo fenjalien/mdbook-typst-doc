@@ -20,6 +20,7 @@ jobs:
           mdbook-version: "0.4.37"
       - name: Build Book
         run: |
+          ls
           cd example
           mdbook build
       - name: Deploy
