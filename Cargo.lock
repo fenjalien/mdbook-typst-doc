@@ -270,15 +270,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "getopts"
-version = "0.2.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "14dbbfd5c71d70241ecf9e6f13737f7b5ce823821063188d7e46c41d371eebd5"
-dependencies = [
- "unicode-width",
-]
-
-[[package]]
 name = "handlebars"
 version = "5.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -381,15 +372,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "mdbook-typst"
+name = "mdbook-typst-doc"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
  "mdbook",
- "pulldown-cmark",
  "regex",
- "serde",
  "serde_json",
  "toml",
 ]
@@ -496,7 +485,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dce76ce678ffc8e5675b22aa1405de0b7037e2fdf8913fea40d1926c6fe1e6e7"
 dependencies = [
  "bitflags",
- "getopts",
  "memchr",
  "pulldown-cmark-escape",
  "unicase",
@@ -713,12 +701,6 @@ name = "unicode-ident"
 version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
-
-[[package]]
-name = "unicode-width"
-version = "0.1.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e51733f11c9c4f72aa0c160008246859e340b00807569a0da0e7a1079b27ba85"
 
 [[package]]
 name = "utf8parse"

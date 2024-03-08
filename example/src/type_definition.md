@@ -1,0 +1,3 @@
+# Custom Type
+
+Lorem ipsum...

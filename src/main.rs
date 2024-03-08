@@ -5,7 +5,8 @@ use mdbook::{
     errors::Error,
     preprocess::{CmdPreprocessor, Preprocessor},
 };
-use mdbook_typst::TypstPreprocessor;
+
+use mdbook_typst_doc::TypstPreprocessor;
 
 fn make_app() -> Command {
     Command::new("mdbook-typst-preprocessor")

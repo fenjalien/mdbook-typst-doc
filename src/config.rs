@@ -13,7 +13,7 @@ fn value_to_string(value: &Value) -> Result<String> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct TypeConfig {
     name: String,
     link: Option<String>,
@@ -35,12 +35,22 @@ impl TypeConfig {
         )
     }
 
-    fn from_value(name: String, value: &Value) -> Result<Self> {
+    fn from_value(value: &Value, name: String, default_class: &Option<String>) -> Result<Self> {
         if let Some(table) = value.as_table() {
+            let class = if let Some(value) = table.get("class") {
+                value.as_str().unwrap().to_owned()
+            } else if let Some(s) = default_class {
+                s.clone()
+            } else {
+                bail!(
+                    "No class given for type {} and no default class is set!",
+                    &name
+                )
+            };
             Ok(TypeConfig {
                 name,
                 link: table.get("link").map(|v| value_to_string(v).unwrap()),
-                class: table.get("class").unwrap().as_str().unwrap().to_owned(),
+                class,
             })
         } else {
             bail!("Malformed table for TypeConfig: {}", value)
@@ -51,12 +61,19 @@ impl TypeConfig {
 #[derive(Default, Debug)]
 pub struct Config {
     pub types: HashMap<String, TypeConfig>,
+    default_type_class: Option<String>,
 }
 
 impl Config {
-    pub fn get_type(&self, key: &str) -> Result<&TypeConfig> {
+    pub fn get_type(&self, key: &str) -> Result<TypeConfig> {
         if let Some(v) = self.types.get(key) {
-            Ok(v)
+            Ok(v.clone())
+        } else if let Some(class) = &self.default_type_class {
+            Ok(TypeConfig {
+                name: key.to_owned(),
+                link: None,
+                class: class.clone(),
+            })
         } else {
             bail!("Unknown type {}", key)
         }
@@ -73,6 +90,10 @@ impl<'a> TryFrom<Option<&'a Table>> for Config {
             None => return Ok(cfg),
         };
 
+        if let Some(default_type_class) = value.get("default-type-class") {
+            cfg.default_type_class = Some(default_type_class.as_str().unwrap().to_owned());
+        }
+
         if let Some(types) = value.get("types") {
             cfg.types = types
                 .as_table()
@@ -81,7 +102,8 @@ impl<'a> TryFrom<Option<&'a Table>> for Config {
                 .map(|(key, value)| {
                     (
                         key.clone(),
-                        TypeConfig::from_value(key.clone(), value).expect("Malformed type config!"),
+                        TypeConfig::from_value(value, key.clone(), &cfg.default_type_class)
+                            .expect("Malformed type config!"),
                     )
                 })
                 .collect();

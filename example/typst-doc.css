@@ -1,0 +1,56 @@
+
+.type {
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 2px 4px;
+    font-family: Cascadia Mono,Courier New,Courier,monospace;
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: 400;
+    color: black;
+}
+a.type {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover.type {
+    text-decoration: none;
+}
+
+.type-con {
+    background: #a6ebe6;
+}
+
+.type-bool {
+    background: #ffedc1;
+}
+
+.type-str {
+    background: #d1ffe2;
+}
+
+.type-keyword {
+    background: #ffcbc4;
+}
+
+.type-num {
+    background: #e7d9ff;
+}
+
+.type-obj {
+    background: #eff0f3;
+}
+
+.type-fn {
+    background: #f9dfff;
+}
+
+.type-color {
+    background: #7cd5ff;
+    background: linear-gradient(83deg,
+            #7cd5ff,
+            #a6fbca 33%,
+            #fff37c 66%,
+            #ffa49d);
+}

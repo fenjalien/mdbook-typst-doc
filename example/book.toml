@@ -1,0 +1,33 @@
+[book]
+authors = ["fenjalien"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Typst Doc Example"
+
+[output.html]
+site-url = "/mdbook-typst-doc/"
+
+# Include the recommeded .css file
+additional-css = ["typst-doc.css"]
+
+[preprocessor.typst-doc]
+# If you have built locally (`cargo build`)
+command = "../target/debug/mdbook-typst-doc.exe"
+# If you have installed from the git repository
+# command = "mdbook-typst-doc"
+
+# The default css class to give to types that are not included in the table below
+default-type-class = "obj"
+
+# Recommended types to include for your book
+[preprocessor.typst-doc.types]
+int = {link = "https://typst.app/docs/reference/foundations/int/", class = "num"}
+float = {link = "https://typst.app/docs/reference/foundations/float/", class = "num"}
+color = {class = "color", link = "https://typst.app/docs/reference/visualize/color/"}
+content = {link = "https://typst.app/docs/reference/foundations/content/", class = "con"}
+bool = {link = "https://typst.app/docs/reference/foundations/bool/", class = "bool"}
+str = {link  = "https://typst.app/docs/reference/foundations/str/", class = "str"}
+auto = {class = "keyword"}
+none = {class = "keyword"}
+custom = {class = "color", link = "/type_definition.html"}
