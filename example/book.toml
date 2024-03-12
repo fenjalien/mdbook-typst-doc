@@ -17,6 +17,9 @@ command = "../target/debug/mdbook-typst-doc"
 # If you have installed from the git repository
 # command = "mdbook-typst-doc"
 
+
+# typst-command = "typst"
+
 # The default css class to give to types that are not included in the table below
 default-type-class = "obj"
 

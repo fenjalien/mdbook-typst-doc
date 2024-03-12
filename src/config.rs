@@ -1,5 +1,6 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fs, path::Path};
 
+use mdbook::utils::fs::normalize_path;
 use std::convert::TryFrom;
 use toml::{value::Table, Value};
 
@@ -58,10 +59,27 @@ impl TypeConfig {
     }
 }
 
-#[derive(Default, Debug)]
+#[derive(Debug, Clone)]
 pub struct Config {
     pub types: HashMap<String, TypeConfig>,
     default_type_class: Option<String>,
+    pub typst_command: String,
+    pub src: String,
+    pub root: String,
+    pub dir: String,
+}
+
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            types: HashMap::new(),
+            default_type_class: None,
+            typst_command: String::from("typst"),
+            src: String::new(),
+            root: String::new(),
+            dir: String::new(),
+        }
+    }
 }
 
 impl Config {
@@ -78,23 +96,45 @@ impl Config {
             bail!("Unknown type {}", key)
         }
     }
-}
 
-impl<'a> TryFrom<Option<&'a Table>> for Config {
-    type Error = Error;
-
-    fn try_from(value: Option<&Table>) -> Result<Self> {
-        let mut cfg = Config::default();
-        let value = match value {
-            Some(c) => c,
-            None => return Ok(cfg),
+    pub fn from_config(config: &mdbook::Config, name: &str) -> Result<Self> {
+        let mut cfg = Self {
+            src: normalize_path(config.book.src.join("mdbook-typst-doc").to_str().unwrap()),
+            root: normalize_path(
+                config
+                    .book
+                    .src
+                    .join("../mdbook-typst-doc")
+                    .to_str()
+                    .unwrap(),
+            ),
+            dir: normalize_path(
+                config
+                    .build
+                    .build_dir
+                    .join("mdbook-typst-doc")
+                    .to_str()
+                    .unwrap(),
+            ),
+            ..Default::default()
         };
 
-        if let Some(default_type_class) = value.get("default-type-class") {
+        if !Path::new(&cfg.root).exists() {
+            fs::create_dir(&cfg.root)?;
+        }
+        if !Path::new(&cfg.src).exists() {
+            fs::create_dir(&cfg.src)?;
+        }
+
+        let Some(table) = config.get_preprocessor(name) else {
+            return Ok(cfg);
+        };
+
+        if let Some(default_type_class) = table.get("default-type-class") {
             cfg.default_type_class = Some(default_type_class.as_str().unwrap().to_owned());
         }
 
-        if let Some(types) = value.get("types") {
+        if let Some(types) = table.get("types") {
             cfg.types = types
                 .as_table()
                 .expect("Expected types to be a table!")
@@ -107,6 +147,10 @@ impl<'a> TryFrom<Option<&'a Table>> for Config {
                     )
                 })
                 .collect();
+        }
+
+        if let Some(typst_command) = table.get("typst-command") {
+            cfg.typst_command = typst_command.as_str().unwrap().to_owned();
         }
 
         Ok(cfg)

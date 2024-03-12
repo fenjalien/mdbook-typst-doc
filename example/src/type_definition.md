@@ -1,3 +1,3 @@
-# Custom Type
+# Custom {{#type custom}}
 
 Lorem ipsum...
