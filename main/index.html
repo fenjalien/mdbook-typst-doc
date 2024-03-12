@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Chapter 1 - Typst Doc Example</title>
+        <title>Main - Typst Doc Example</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="type_definition.html"><strong aria-hidden="true">2.</strong> Type Definition</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> Main</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="type_definition.html"><strong aria-hidden="true">1.1.</strong> Type Definition</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -184,6 +184,32 @@
 <p><span  class='typst type type-keyword'>none</span></p>
 <p><a href=/type_definition.html class='typst type type-color'>custom</a></p>
 <p><span  class='typst type type-obj'>other</span></p>
+<h1 id="typst-example"><a class="header" href="#typst-example">Typst Example</a></h1>
+<p><img src="src/../mdbook-typst-doc/40b5a.svg" alt="" /></p>
+<pre><code><span class="typ-key">#</span><span class="typ-key">set</span> <span class="typ-func">page</span><span class="typ-punct">(</span>height<span class="typ-punct">:</span> <span class="typ-key">auto</span><span class="typ-punct">)</span>
+<span class="typ-heading">= Fibonacci change</span>
+The Fibonacci sequence is defined through the
+<span class="typ-emph">_recurrence relation_</span> <span class="typ-math-delim">$</span>F<span class="typ-math-op">_</span>n = F<span class="typ-math-op">_</span><span class="typ-punct">(</span>n<span class="typ-escape">-</span>1<span class="typ-punct">)</span> + F<span class="typ-math-op">_</span><span class="typ-punct">(</span>n<span class="typ-escape">-</span>2<span class="typ-punct">)</span><span class="typ-math-delim">$</span>.
+It can also be expressed in closed form:
+
+<span class="typ-math-delim">$</span> F<span class="typ-math-op">_</span>n = <span class="typ-func">floor</span><span class="typ-punct">(</span>1 <span class="typ-math-op">/</span> <span class="typ-func">sqrt</span><span class="typ-punct">(</span>5<span class="typ-punct">)</span> <span class="typ-pol">phi</span><span class="typ-punct">.</span><span class="typ-pol">alt</span><span class="typ-math-op">^</span>n<span class="typ-punct">)</span>, <span class="typ-pol">quad</span> <span class="typ-pol">phi</span><span class="typ-punct">.</span><span class="typ-pol">alt</span> = <span class="typ-punct">(</span>1 + <span class="typ-func">sqrt</span><span class="typ-punct">(</span>5<span class="typ-punct">)</span><span class="typ-punct">)</span> <span class="typ-math-op">/</span> 2 <span class="typ-math-delim">$</span>
+
+<span class="typ-key">#</span><span class="typ-key">let</span> count <span class="typ-op">=</span> <span class="typ-num">10</span>
+<span class="typ-key">#</span><span class="typ-key">let</span> nums <span class="typ-op">=</span> <span class="typ-func">range</span><span class="typ-punct">(</span><span class="typ-num">1</span><span class="typ-punct">,</span> count <span class="typ-op">+</span> <span class="typ-num">1</span><span class="typ-punct">)</span>
+<span class="typ-key">#</span><span class="typ-key">let</span> <span class="typ-func">fib</span><span class="typ-punct">(</span>n<span class="typ-punct">)</span> <span class="typ-op">=</span> <span class="typ-punct">(</span>
+  <span class="typ-key">if</span> n <span class="typ-op">&lt;=</span> <span class="typ-num">2</span> <span class="typ-punct">{</span> <span class="typ-num">1</span> <span class="typ-punct">}</span>
+  <span class="typ-key">else</span> <span class="typ-punct">{</span> <span class="typ-func">fib</span><span class="typ-punct">(</span>n <span class="typ-op">-</span> <span class="typ-num">1</span><span class="typ-punct">)</span> <span class="typ-op">+</span> <span class="typ-func">fib</span><span class="typ-punct">(</span>n <span class="typ-op">-</span> <span class="typ-num">2</span><span class="typ-punct">)</span> <span class="typ-punct">}</span>
+<span class="typ-punct">)</span>
+
+The first <span class="typ-pol">#</span><span class="typ-pol">count</span> numbers of the sequence are:
+
+<span class="typ-func">#</span><span class="typ-func">align</span><span class="typ-punct">(</span>center<span class="typ-punct">,</span> <span class="typ-func">table</span><span class="typ-punct">(</span>
+  columns<span class="typ-punct">:</span> count<span class="typ-punct">,</span>
+  <span class="typ-op">..</span>nums<span class="typ-punct">.</span><span class="typ-func">map</span><span class="typ-punct">(</span>n <span class="typ-op">=&gt;</span> <span class="typ-math-delim">$</span>F<span class="typ-math-op">_</span><span class="typ-pol">#</span><span class="typ-pol">n</span><span class="typ-math-delim">$</span><span class="typ-punct">)</span><span class="typ-punct">,</span>
+  <span class="typ-op">..</span>nums<span class="typ-punct">.</span><span class="typ-func">map</span><span class="typ-punct">(</span>n <span class="typ-op">=&gt;</span> <span class="typ-func">str</span><span class="typ-punct">(</span><span class="typ-func">fib</span><span class="typ-punct">(</span>n<span class="typ-punct">)</span><span class="typ-punct">)</span><span class="typ-punct">)</span><span class="typ-punct">,</span>
+<span class="typ-punct">)</span><span class="typ-punct">)</span>
+
+</code></pre>
 
                     </main>
 
