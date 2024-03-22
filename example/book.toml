@@ -34,3 +34,17 @@ str = {link  = "https://typst.app/docs/reference/foundations/str/", class = "str
 auto = {class = "keyword"}
 none = {class = "keyword"}
 custom = {class = "color", link = "/type_definition.html"}
+
+# Example templates for "typ" and "typc" code blocks.
+# "{{input}}" will be replaced by the text in the code block.
+[preprocessor.typst-doc.code-templates]
+typ = """
+#set page(height: auto, fill: white)
+{{input}}
+"""
+typc = """
+#set page(height: auto, fill: white)
+#{
+  {{input}}
+}
+"""

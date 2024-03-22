@@ -20,8 +20,7 @@
 
 # Typst Example
 
-```typ
-#set page(height: auto)
+```typ,example
 = Fibonacci change
 The Fibonacci sequence is defined through the
 _recurrence relation_ $F_n = F_(n-1) + F_(n-2)$.
@@ -46,3 +45,15 @@ The first #count numbers of the sequence are:
 
 ```
 
+```typc,example
+[hello world]
+if 1 == 2 {
+  [this doesn't feel right]
+} else {
+  [this _does_ seem right]
+}
+```
+
+```typ
+hello world
+```

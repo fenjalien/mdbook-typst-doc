@@ -1,12 +1,12 @@
 # mdbook Typst Doc Preprocessor
-A preprocess for mdbook to aid in writing Typst documentation. This is currently still a work in progress and only public because it needs to be accessed from Github Actions for another repository.
+A preprocess for mdbook's html renderer to aid in writing Typst documentation. This is currently still a work in progress.
 
 ## Features
 - [x] Display Typst types as colored pills, like in the Typst documentation.
-- [ ] Typst code block:
-  - [ ] Highlighting
-  - [ ] Rendering
-  - [ ] Examples (highlighting code and rendering)
+- [x] Typst code block:
+  - [x] Highlighting
+  - [x] Rendering
+  - [x] Examples (highlighting code and rendering)
 - [ ] Parameter descriptions
 - [ ] Function definitions
 
@@ -26,6 +26,35 @@ Converts `{{#type ...}}` into a link to the type's web page with the same stylin
 int = {class = "num", link = "https://typst.app/docs/reference/foundations/int/"}
 ```
 - `link`: The link to the type's definition. You can use a realtive url if you define your own types within the book (`"/type_definition.html"`). If no link is given the output HTML element will not be a link.
-- `class`: The text to append to `"type-"` to make up the CSS class of the HTML element. This is to aid in the styling of the element. This is required unless the key `typst-doc.default-type-class` is given, in which case the default class will be used.
+- `class`: The text to append to `"type-"` to make up the CSS class of the HTML element. This is to aid in the styling of the element. This is required unless the key `default-type-class` is given, in which case the default class will be used.
 
 Normally the preprocessor will panic if a type is used that is not in the config table. That is, unless the `default-type-class` key has been given, in which case an element with the given class and no link will be placed.
+
+### Typst Code Blocks
+Code blocks that have a language `typ` or `typc` can be processed. A `typ` block is in markup mode while a `typc` block is in code mode.
+
+By default syntax highlighting will be applied to the code and nothing else. To render the code instead you can include the `render` option on the code block like this:
+```typ,render
+Hello, world!
+```
+To show the code block and the rendered output include the `example` option instead of `render`.
+
+Rendering Typst code blocks requires the Typst CLI 0.11.0 to be installed on the system. By default the `typst` command will be used but this can be changed by setting the `typst-command` option.
+
+Rendered images are named after the first 5 characters of the md5 sum of their source code. They will first be rendered to `mdbook-typst-doc/` then moved all at once into `src/mdbook-typst-doc/`. This will trigger a re-render if the `serve` or `watch` command is being used. However if the file already exists in `src/mdbook-typst-src/` the file it will not be rendered and moved again.
+
+## Custom Templates
+You can override the default look of the above features by providing handlebar templates in `themes/typst-doc`. The default templates are kept in `/src/themes/`.
+- `type.hbs`: Template for the Typst types.
+  - `{{link}}` The url to the type's definition
+  - `{{class}}` The css class to apply to the type
+  - `{{name}}` The name of the type.
+- `code.hbs`: Template for a Typst code block with no options.
+  - `{{source}}` The highlighted code block.
+- `render.hbs`: Template for a rendered Typst code block.
+  - `{{image}}` The markdown link to the generated image.
+- `example.hbs`: Template for a Typst code block with a rendered image.
+  - `{{source}}` The highlighted code block.
+  - `{{image}}` The markdown link to the generated image.
+
+You can also specify a code template to use before a Typst code block is rendered. They should be stored in a table with the key `code-templates`. You can specify a unique template for `typ` code and `typc` code. The `{{input}}` will be replaced by the source code to be rendered. See the example book toml for more details.

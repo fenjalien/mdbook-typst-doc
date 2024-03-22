@@ -1,5 +1,6 @@
 use std::{
     borrow::Borrow,
+    collections::HashMap,
     convert::TryInto,
     fs,
     io::Write,
@@ -65,7 +66,8 @@ impl TypstPreprocessor {
     pub fn new() -> Self {
         TypstPreprocessor {
             type_regex: Regex::new(r"(?m)\{\{#type (.*?)\}\}").unwrap(),
-            code_block_regex: Regex::new(r"(?msU)```(typ|typc)\n(.*)```").unwrap(),
+            code_block_regex: Regex::new(r"(?msU)```(typ|typc)(?:,(render|example))?\r?\n(.*)```")
+                .unwrap(),
         }
     }
 
@@ -79,46 +81,63 @@ impl TypstPreprocessor {
             chapter.content = self
                 .type_regex
                 .replace_all(&chapter.content, |captures: &Captures| {
-                    config.get_type(&captures[1]).unwrap().to_html()
+                    config
+                        .handlebars
+                        .render("type", &config.get_type(&captures[1]).unwrap())
+                        .unwrap()
                 })
                 .to_string();
 
             chapter.content = self
                 .code_block_regex
                 .replace_all(&chapter.content, |captures: &Captures| {
-                    let source = &captures[2];
-                    let name =
-                        String::from(format!("{:x}", md5::compute(source)).split_at(5).0) + ".svg";
-                    let path = format!("{}/{name}", &config.root);
-
-                    if !Path::new(&format!("{}/{name}", &config.src)).exists() {
-                        let mut child = Command::new(&config.typst_command)
-                            .args(["c", "-", &path])
-                            .stdin(Stdio::piped())
-                            .stdout(Stdio::piped())
-                            .stderr(Stdio::piped())
-                            .spawn()
-                            .expect("Failed to spawn Typst as a child process!");
-
-                        if let Some(mut stdin) = child.stdin.take() {
-                            stdin.write_all(source.as_bytes()).unwrap();
-                        } else {
-                            panic!("Failed to open stdin to write data to the Typst binary!");
-                        }
-
-                        sender.send(child).unwrap();
+                    let mode = &captures[1];
+                    let layout = &captures.get(2).map(|m| m.as_str());
+                    let mut data = HashMap::new();
+                    let source = &captures[3];
+                    if layout != &Some("render") {
+                        data.insert(
+                            "source",
+                            typst_syntax::highlight_html(&if &captures[1] == "typ" {
+                                typst_syntax::parse(source)
+                            } else {
+                                typst_syntax::parse_code(source)
+                            }),
+                        );
                     }
+                    if layout != &None {
+                        let mut input = HashMap::new();
+                        input.insert("input", source);
 
-                    let mut output = String::new();
-                    output.push_str(&format!("![]({path})\n"));
-                    output.push_str("<pre>");
-                    output.push_str(&typst_syntax::highlight_html(&if &captures[1] == "typ" {
-                        typst_syntax::parse(source)
-                    } else {
-                        typst_syntax::parse_code(source)
-                    }));
-                    output.push_str("</pre>");
-                    return output;
+                        let source = config.handlebars.render(mode, &input).unwrap();
+                        let name =
+                            String::from(format!("{:x}", md5::compute(&source)).split_at(5).0)
+                                + ".svg";
+                        let path = format!("{}/{name}", &config.root);
+
+                        if !Path::new(&format!("{}/{name}", &config.src)).exists() {
+                            let mut child = Command::new(&config.typst_command)
+                                .args(["c", "-", &path])
+                                .stdin(Stdio::piped())
+                                .stdout(Stdio::piped())
+                                .stderr(Stdio::piped())
+                                .spawn()
+                                .expect("Failed to spawn Typst as a child process!");
+
+                            if let Some(mut stdin) = child.stdin.take() {
+                                stdin.write_all(source.as_bytes()).unwrap();
+                            } else {
+                                panic!("Failed to open stdin to write data to the Typst binary!");
+                            }
+
+                            sender.send(child).unwrap();
+                        }
+                        data.insert("image", format!("![]({}/{name})", &config.root));
+                    }
+                    config
+                        .handlebars
+                        .render(layout.unwrap_or("code"), &data)
+                        .unwrap()
                 })
                 .to_string();
         }

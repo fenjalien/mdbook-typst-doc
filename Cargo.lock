@@ -447,10 +447,12 @@ dependencies = [
  "anyhow",
  "clap",
  "fs_extra",
+ "handlebars",
  "md5",
  "mdbook",
  "pulldown-cmark",
  "regex",
+ "serde",
  "serde_json",
  "toml",
  "typst-syntax",
@@ -807,9 +809,9 @@ checksum = "42ff0bf0c66b8238c6f3b578df37d0b7848e55df8577b3f74f92a69acceeb825"
 
 [[package]]
 name = "typst-syntax"
-version = "0.11.0-rc1"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4522484e1ab3c85ba83c3592d4e5d6bb3f994b33223bf8ef175756d14935791d"
+checksum = "367d86bf18f0363146bea1ea76fad19b54458695fdfad5e74ead3ede574b75fe"
 dependencies = [
  "comemo",
  "ecow",
