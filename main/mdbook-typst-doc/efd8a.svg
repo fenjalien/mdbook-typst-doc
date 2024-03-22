@@ -1,5 +1,8 @@
 <svg class="typst-doc" viewBox="0 0 595.2764999999999 291.85850390625" width="595.2764999999999pt" height="291.85850390625pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:h5="http://www.w3.org/1999/xhtml">
     <g>
+        <g transform="translate(0 0)">
+            <path class="typst-shape" fill="#ffffff" d="M 0 0 L 0 291.8585 L 595.2765 291.8585 L 595.2765 0 Z "/>
+        </g>
         <g transform="translate(70.86625 70.86625)">
             <g class="typst-group">
                 <g>

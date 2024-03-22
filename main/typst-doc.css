@@ -8,6 +8,10 @@ a:hover.type {
     text-decoration: none;
 }
 
+a[href=""].type {
+    pointer-events: none;
+}
+
 h1 .type {
     font-size: inherit !important
 }
