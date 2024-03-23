@@ -6,7 +6,7 @@ src = "src"
 title = "Typst Doc Example"
 
 [output.html]
-site-url = "/mdbook-typst-doc/"
+# site-url = "/mdbook-typst-doc/"
 
 # Include the recommeded .css file
 additional-css = ["typst-doc.css"]

@@ -58,8 +58,6 @@ parbreak()
 import "/data.typ": a
 
 a
-
-
 ```
 
 ```typ
@@ -71,13 +69,12 @@ hello world
 Hello this is a description {{#type int}}
 </parameter-definition>
 
-<parameter-definition default="(1,2,3)" name="stuff" types="array">
+<parameter-definition name="not-default" types="array">
 Some other information that is totally useful.
 </parameter-definition>
 
 
-<parameter-definition name="not-default" types="custom" default=""join me"">
+<parameter-definition name="stuff" types="custom" default=""join me"">
 Some other information that is totally useful.
 </parameter-definition>
-
 

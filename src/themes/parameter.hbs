@@ -1,18 +1,26 @@
-<div>
-  <div class="parameter-details">
-    <div class="main-details">
-      <h4>{{name}}:</h4>
-      {{#each types}}
-      {{#unless @first}}
-       or 
-      {{/unless}}
-      {{this}}
-      {{/each}}
-    </div>
-    {{#if default}}
-    <span class="parameter-default">Default: {{default}}</span>
-    {{/if}}
-  </div>
-  
-  <p class="parameter-description">{{description}}</p>
+<div class="parameter">
+<div class="parameter parameter-details">
+<div class="parameter main-details">
+<h4>{{name}}:</h4>
+{{#each types}}
+{{#unless @first}}
+ or 
+{{/unless}}
+
+{{this}}
+
+{{/each}}
+</div>
+{{#if default}}
+
+<span class="parameter parameter-default">Default:{{default}}</span>
+
+{{/if}}
+</div>
+
+<div class="parameter-description">
+
+{{description}}
+
+</div>
 </div>

@@ -19,6 +19,7 @@ pub struct TypeConfig {
     name: String,
     link: String,
     class: String,
+    pub use_link: bool,
 }
 
 impl TypeConfig {
@@ -41,6 +42,7 @@ impl TypeConfig {
                     .map(|v| value_to_string(v).unwrap())
                     .unwrap_or_default(),
                 class,
+                use_link: true
             })
         } else {
             bail!("Malformed table for TypeConfig: {}", toml)
@@ -95,6 +97,7 @@ impl<'a> Config<'a> {
                 name: key.to_owned(),
                 link: String::new(),
                 class: class.clone(),
+                use_link: true
             })
         } else {
             bail!("Unknown type {}", key)

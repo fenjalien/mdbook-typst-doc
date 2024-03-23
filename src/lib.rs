@@ -65,7 +65,7 @@ impl Preprocessor for TypstPreprocessor {
 impl TypstPreprocessor {
     pub fn new() -> Self {
         TypstPreprocessor {
-            type_regex: Regex::new(r"(?m)\{\{#type (.*?)\}\}").unwrap(),
+            type_regex: Regex::new(r"(?m)\{\{#(!)?type (.*?)\}\}").unwrap(),
             code_block_regex: Regex::new(r"(?msU)```(typ|typc)(?:,(render|example))?\r?\n(.*)```")
                 .unwrap(),
             parameter_regex: Regex::new(r"(?msU)<parameter-definition(?:\s+default=\u{22}(?P<default>.*)\u{22}|\s+name=\u{22}(?P<name>.*)\u{22}|\s+types=\u{22}(?P<types>.*)\u{22})+\s*>(?P<description>.*)</parameter-definition>").unwrap()
@@ -114,10 +114,9 @@ impl TypstPreprocessor {
             chapter.content = self
                 .type_regex
                 .replace_all(&chapter.content, |captures: &Captures| {
-                    config
-                        .handlebars
-                        .render("type", &config.get_type(&captures[1]).unwrap())
-                        .unwrap()
+                    let mut data = config.get_type(&captures[2]).unwrap();
+                    data.use_link = captures.get(1).is_none();
+                    config.handlebars.render("type", &data).unwrap()
                 })
                 .to_string();
 

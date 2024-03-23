@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+env:
+  MDBOOK_OUTPUT__HTML__SITE_URL: /mdbook-typst-doc/main/
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

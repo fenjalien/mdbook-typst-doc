@@ -30,6 +30,8 @@ int = {class = "num", link = "https://typst.app/docs/reference/foundations/int/"
 
 Normally the preprocessor will panic if a type is used that is not in the config table. That is, unless the `default-type-class` key has been given, in which case an element with the given class and no link will be placed.
 
+For some reason having a link in the default template breaks when used within a heading. You can place an exclamation mark `!` between the hash and the type (`{{#!type ...}}`) to not use a link. If you know/find a way to fix this without having to turn off the link please let me know :)
+
 ### Typst Code Blocks
 Code blocks that have a language `typ` or `typc` can be processed. A `typ` block is in markup mode while a `typc` block is in code mode.
 
@@ -60,6 +62,7 @@ You can override the default look of the above features by providing handlebar t
   - `link` The url to the type's definition
   - `class` The css class to apply to the type
   - `name` The name of the type.
+  - `use_link` A boolean that is false when `!` is added after the hash. It should not use the link if false.
 - `code.hbs`: Template for a Typst code block with no options.
   - `source` The highlighted code block.
 - `render.hbs`: Template for a rendered Typst code block.
