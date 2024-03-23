@@ -57,3 +57,13 @@ if 1 == 2 {
 ```typ
 hello world
 ```
+
+# Parameter Definition
+<parameter-definition default="auto" name="value" types="auto,none,float,int">
+Hello this is a description
+</parameter-definition>
+
+<parameter-definition default="(1,2,3)" name="stuff" types="array">
+Some other information that is totally useful.
+</parameter-definition>
+

@@ -7,7 +7,7 @@ A preprocess for mdbook's html renderer to aid in writing Typst documentation. T
   - [x] Highlighting
   - [x] Rendering
   - [x] Examples (highlighting code and rendering)
-- [ ] Parameter descriptions
+- [x] Parameter descriptions
 - [ ] Function definitions
 
 ## Setup
@@ -43,18 +43,36 @@ Rendering Typst code blocks requires the Typst CLI 0.11.0 to be installed on the
 
 Rendered images are named after the first 5 characters of the md5 sum of their source code. They will first be rendered to `mdbook-typst-doc/` then moved all at once into `src/mdbook-typst-doc/`. This will trigger a re-render if the `serve` or `watch` command is being used. However if the file already exists in `src/mdbook-typst-src/` the file it will not be rendered and moved again.
 
+### Parameter Defintions
+Stylised and formatted parameter descriptions! It should be written as an html block like so:
+```html
+<parameter-description name="name" types="int,float" default="default">
+Some description
+</parameter-description>
+```
+
+The `name` attribute and text inside the tags will be left alone. The `types` attribute will be split on commas and formatted to use the `{{#type ...}}` preprocessor. The `default` attribute will be highlighted.
+
+
 ## Custom Templates
-You can override the default look of the above features by providing handlebar templates in `themes/typst-doc`. The default templates are kept in `/src/themes/`.
+You can override the default look of the above features by providing handlebar templates in `themes/typst-doc` with the following names. The keys and values of the data passed to the template is also described:
 - `type.hbs`: Template for the Typst types.
-  - `{{link}}` The url to the type's definition
-  - `{{class}}` The css class to apply to the type
-  - `{{name}}` The name of the type.
+  - `link` The url to the type's definition
+  - `class` The css class to apply to the type
+  - `name` The name of the type.
 - `code.hbs`: Template for a Typst code block with no options.
-  - `{{source}}` The highlighted code block.
+  - `source` The highlighted code block.
 - `render.hbs`: Template for a rendered Typst code block.
-  - `{{image}}` The markdown link to the generated image.
+  - `image` The markdown link to the generated image.
 - `example.hbs`: Template for a Typst code block with a rendered image.
-  - `{{source}}` The highlighted code block.
-  - `{{image}}` The markdown link to the generated image.
+  - `source` The highlighted code block.
+  - `image` The markdown link to the generated image.
+- `parameter.hbs`: Template for the parameter description.
+  - `name` The string given by the `name` attribute.
+  - `types` An array of strings formatted to use the type preprocessor feature given by splitting the `types` attribute on commas.
+  - `default` The default value given by the `default` attribute.
+  - `description` The text between the tags.
+
+ The default templates are kept in `/src/themes/`.
 
 You can also specify a code template to use before a Typst code block is rendered. They should be stored in a table with the key `code-templates`. You can specify a unique template for `typ` code and `typc` code. The `{{input}}` will be replaced by the source code to be rendered. See the example book toml for more details.

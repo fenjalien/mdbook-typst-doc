@@ -85,7 +85,9 @@ impl<'a> Default for Config<'a> {
         hb.register_template_string("example", include_str!("themes/example.hbs"))
             .unwrap();
         hb.register_template_string("render", include_str!("themes/render.hbs"))
-            .unwrap();
+        .unwrap();
+        hb.register_template_string("parameter", include_str!("themes/parameter.hbs"))
+        .unwrap();
         Self {
             types: HashMap::new(),
             default_type_class: None,
@@ -162,7 +164,7 @@ impl<'a> Config<'a> {
         }
 
         let theme_dir = config.book.src.join("../themes/typst-doc");
-        for name in ["type", "code", "example", "render"] {
+        for name in ["type", "code", "example", "render", "parameter"] {
             let path = theme_dir.join(String::from(name) + ".hbs");
             if path.exists() {
                 cfg.handlebars.register_template_file(name, path)?;

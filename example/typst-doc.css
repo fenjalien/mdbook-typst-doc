@@ -1,4 +1,35 @@
+/* Parameter Description */
+.parameter-details,
+.main-details {
+    display: flex;
+    align-items: center;
+    font-family: Cascadia Mono, Courier New, Courier, monospace;
+}
 
+.main-details h4 {
+    margin: 0;
+}
+
+.parameter-details {
+    justify-content: space-between;
+}
+
+.parameter-default {
+    background: none !important
+}
+
+.main-details {
+    gap: 0.5rem;
+}
+
+.parameter-description > .hljs {
+    /* description indent */
+    margin-inline-start: 2rem;
+}
+
+
+
+/* Types */
 a.type {
     text-decoration: none;
     color: black;
@@ -24,7 +55,7 @@ h1 a.type {
     border-radius: 4px;
     font-size: 14px;
     padding: 2px 4px;
-    font-family: Cascadia Mono,Courier New,Courier,monospace;
+    font-family: Cascadia Mono, Courier New, Courier, monospace;
     white-space: nowrap;
     display: inline-block;
     font-weight: 400;
@@ -68,21 +99,75 @@ h1 a.type {
             #ffa49d);
 }
 
-.typ-comment { color: #8a8a8a; }
-.typ-escape { color: #1d6c76; }
-.typ-strong { font-weight: bold; }
-.typ-emph { font-style: italic; }
-.typ-link { text-decoration: underline; }
-.typ-raw { color: #818181; }
-.typ-label { color: #1d6c76; }
-.typ-ref { color: #1d6c76; }
-.typ-heading { font-weight: bold; text-decoration: underline; }
-.typ-marker { color: #8b41b1; }
-.typ-term { font-weight: bold; }
-.typ-math-delim { color: #298e0d; }
-.typ-math-op { color: #1d6c76; }
-.typ-key { color: #d73a49; }
-.typ-num { color: #b60157; }
-.typ-str { color: #298e0d; }
-.typ-func { color: #4b69c6; }
-.typ-pol { color: #8b41b1; }
+.typ-comment {
+    color: #8a8a8a;
+}
+
+.typ-escape {
+    color: #1d6c76;
+}
+
+.typ-strong {
+    font-weight: bold;
+}
+
+.typ-emph {
+    font-style: italic;
+}
+
+.typ-link {
+    text-decoration: underline;
+}
+
+.typ-raw {
+    color: #818181;
+}
+
+.typ-label {
+    color: #1d6c76;
+}
+
+.typ-ref {
+    color: #1d6c76;
+}
+
+.typ-heading {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.typ-marker {
+    color: #8b41b1;
+}
+
+.typ-term {
+    font-weight: bold;
+}
+
+.typ-math-delim {
+    color: #298e0d;
+}
+
+.typ-math-op {
+    color: #1d6c76;
+}
+
+.typ-key {
+    color: #d73a49;
+}
+
+.typ-num {
+    color: #b60157;
+}
+
+.typ-str {
+    color: #298e0d;
+}
+
+.typ-func {
+    color: #4b69c6;
+}
+
+.typ-pol {
+    color: #8b41b1;
+}

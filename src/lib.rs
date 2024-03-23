@@ -19,6 +19,7 @@ use mdbook::{
     BookItem,
 };
 use regex::{Captures, Regex};
+use toml::{map::Map, Value};
 
 mod config;
 use crate::config::Config;
@@ -26,6 +27,7 @@ use crate::config::Config;
 pub struct TypstPreprocessor {
     type_regex: Regex,
     code_block_regex: Regex,
+    parameter_regex: Regex,
 }
 
 impl Preprocessor for TypstPreprocessor {
@@ -68,6 +70,7 @@ impl TypstPreprocessor {
             type_regex: Regex::new(r"(?m)\{\{#type (.*?)\}\}").unwrap(),
             code_block_regex: Regex::new(r"(?msU)```(typ|typc)(?:,(render|example))?\r?\n(.*)```")
                 .unwrap(),
+            parameter_regex: Regex::new(r"(?msU)<parameter-definition(?:\s+default=\u{22}(?P<default>.*)\u{22}|\s+name=\u{22}(?P<name>.*)\u{22}|\s+types=\u{22}(?P<types>.*)\u{22})+\s*>(?P<description>.*)</parameter-definition>").unwrap()
         }
     }
 
@@ -77,6 +80,44 @@ impl TypstPreprocessor {
                 .sub_items
                 .iter_mut()
                 .for_each(|section| self.process_chapter(section, config, &sender));
+
+            chapter.content = self
+                .parameter_regex
+                .replace_all(&chapter.content, |captures: &Captures| {
+                    // idk why I did this with a toml map, coul've used json
+                    let mut data = Map::new();
+                    for name in ["name", "types", "default", "description"] {
+                        data.insert(
+                            name.into(),
+                            captures
+                                .name(name)
+                                .map(|c| c.as_str())
+                                .unwrap_or_default()
+                                .try_into()
+                                .unwrap(),
+                        );
+                    }
+
+                    if let Some(types) = data.get_mut("types") {
+                        *types = Value::from(
+                            types
+                                .as_str()
+                                .unwrap()
+                                .split(",")
+                                .map(|t| format!("{{{{#type {t}}}}}"))
+                                .collect::<Vec<_>>(),
+                        );
+                    }
+
+                    if let Some(default) = data.get_mut("default") {
+                        *default = Value::from(typst_syntax::highlight_html(
+                            &typst_syntax::parse_code(default.as_str().unwrap()),
+                        ));
+                    }
+
+                    config.handlebars.render("parameter", &data).unwrap()
+                })
+                .to_string();
 
             chapter.content = self
                 .type_regex
