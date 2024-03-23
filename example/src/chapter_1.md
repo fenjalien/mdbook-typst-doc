@@ -52,6 +52,14 @@ if 1 == 2 {
 } else {
   [this _does_ seem right]
 }
+
+parbreak()
+
+import "/data.typ": a
+
+a
+
+
 ```
 
 ```typ
@@ -66,4 +74,6 @@ Hello this is a description
 <parameter-definition default="(1,2,3)" name="stuff" types="array">
 Some other information that is totally useful.
 </parameter-definition>
+
+
 

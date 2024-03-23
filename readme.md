@@ -39,7 +39,7 @@ Hello, world!
 ```
 To show the code block and the rendered output include the `example` option instead of `render`.
 
-Rendering Typst code blocks requires the Typst CLI 0.11.0 to be installed on the system. By default the `typst` command will be used but this can be changed by setting the `typst-command` option.
+Rendering Typst code blocks requires the Typst CLI 0.11.0 to be installed on the system. By default the `typst` command will be used but this can be changed by setting the `typst-command` option. The root folder will be the book's folder (`example/`) but the `root-arg` option will be given as the `--root` argument if present.
 
 Rendered images are named after the first 5 characters of the md5 sum of their source code. They will first be rendered to `mdbook-typst-doc/` then moved all at once into `src/mdbook-typst-doc/`. This will trigger a re-render if the `serve` or `watch` command is being used. However if the file already exists in `src/mdbook-typst-src/` the file it will not be rendered and moved again.
 

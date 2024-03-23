@@ -1,11 +1,8 @@
 use std::{
     borrow::Borrow,
     collections::HashMap,
-    convert::TryInto,
-    fs,
     io::Write,
-    ops::Drop,
-    path::{Path, PathBuf},
+    path::Path,
     process::{Child, Command, Stdio},
     sync::mpsc::{self, Sender},
     thread,
@@ -15,7 +12,6 @@ use anyhow::Result;
 use mdbook::{
     book::Book,
     preprocess::{Preprocessor, PreprocessorContext},
-    utils::fs::normalize_path,
     BookItem,
 };
 use regex::{Captures, Regex};
@@ -36,22 +32,24 @@ impl Preprocessor for TypstPreprocessor {
     }
 
     fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> Result<Book> {
-        eprintln!("running");
         let config: Config = Config::from_config(&ctx.config, self.name())?;
-        eprintln!("got config");
+
         let (sender, receiver) = mpsc::channel::<Child>();
         let handle = thread::spawn(move || {
-            for mut child in receiver.iter() {
-                child.wait().unwrap();
+            for child in receiver.iter() {
+                let output = child.wait_with_output().unwrap();
+                if !output.status.success() {
+                    panic!("{}", String::from_utf8(output.stderr).unwrap());
+                }
             }
         });
-        eprintln!("setup thread");
-        let root = config.root.clone();
+
+        let root = config.cache.clone();
         let src = config.src.clone();
         book.for_each_mut(move |section| self.process_chapter(section, &config, sender.borrow()));
-        eprintln!("processed book");
+
         handle.join().unwrap();
-        eprintln!("joined");
+
         fs_extra::move_items(
             &Path::new(&root)
                 .read_dir()?
@@ -79,7 +77,7 @@ impl TypstPreprocessor {
             chapter
                 .sub_items
                 .iter_mut()
-                .for_each(|section| self.process_chapter(section, config, &sender));
+                .for_each(|section| self.process_chapter(section, config, sender));
 
             chapter.content = self
                 .parameter_regex
@@ -93,8 +91,7 @@ impl TypstPreprocessor {
                                 .name(name)
                                 .map(|c| c.as_str())
                                 .unwrap_or_default()
-                                .try_into()
-                                .unwrap(),
+                                .into(),
                         );
                     }
 
@@ -103,7 +100,7 @@ impl TypstPreprocessor {
                             types
                                 .as_str()
                                 .unwrap()
-                                .split(",")
+                                .split(',')
                                 .map(|t| format!("{{{{#type {t}}}}}"))
                                 .collect::<Vec<_>>(),
                         );
@@ -146,7 +143,7 @@ impl TypstPreprocessor {
                             }),
                         );
                     }
-                    if layout != &None {
+                    if layout.is_some() {
                         let mut input = HashMap::new();
                         input.insert("input", source);
 
@@ -154,14 +151,20 @@ impl TypstPreprocessor {
                         let name =
                             String::from(format!("{:x}", md5::compute(&source)).split_at(5).0)
                                 + ".svg";
-                        let path = format!("{}/{name}", &config.root);
+                        let path = format!("{}/{name}", &config.cache);
 
                         if !Path::new(&format!("{}/{name}", &config.src)).exists() {
-                            let mut child = Command::new(&config.typst_command)
+                            let mut command = Command::new(&config.typst_command);
+                            command
                                 .args(["c", "-", &path])
                                 .stdin(Stdio::piped())
                                 .stdout(Stdio::piped())
-                                .stderr(Stdio::piped())
+                                .stderr(Stdio::piped());
+                            if let Some(root) = &config.root {
+                                command.arg("--root");
+                                command.arg(root);
+                            }
+                            let mut child = command
                                 .spawn()
                                 .expect("Failed to spawn Typst as a child process!");
 
@@ -173,7 +176,7 @@ impl TypstPreprocessor {
 
                             sender.send(child).unwrap();
                         }
-                        data.insert("image", format!("![]({}/{name})", &config.root));
+                        data.insert("image", format!("![]({}/{name})", &config.cache));
                     }
                     config
                         .handlebars

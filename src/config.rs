@@ -4,7 +4,7 @@ use anyhow::{bail, Result};
 use handlebars::Handlebars;
 use mdbook::utils::fs::normalize_path;
 use serde::Serialize;
-use toml::{value::Table, Value};
+use toml::Value;
 
 fn value_to_string(value: &Value) -> Result<String> {
     if let Some(s) = value.as_str() {
@@ -22,20 +22,6 @@ pub struct TypeConfig {
 }
 
 impl TypeConfig {
-    // pub fn to_html(&self) -> String {
-    //     format!(
-    //         r"<{3} {2} class='typst type type-{0}'>{1}</{3}>",
-    //         self.class,
-    //         self.name,
-    //         if let Some(link) = &self.link {
-    //             String::from("href=") + &link
-    //         } else {
-    //             String::new()
-    //         },
-    //         if self.link.is_some() { "a" } else { "span" }
-    //     )
-    // }
-
     fn from_toml(toml: &Value, name: String, default_class: &Option<String>) -> Result<Self> {
         if let Some(table) = toml.as_table() {
             let class = if let Some(value) = table.get("class") {
@@ -67,9 +53,9 @@ pub struct Config<'a> {
     pub types: HashMap<String, TypeConfig>,
     default_type_class: Option<String>,
     pub typst_command: String,
+    pub root: Option<String>,
     pub src: String,
-    pub root: String,
-    pub dir: String,
+    pub cache: String,
     pub handlebars: Handlebars<'a>,
 }
 
@@ -85,16 +71,16 @@ impl<'a> Default for Config<'a> {
         hb.register_template_string("example", include_str!("themes/example.hbs"))
             .unwrap();
         hb.register_template_string("render", include_str!("themes/render.hbs"))
-        .unwrap();
+            .unwrap();
         hb.register_template_string("parameter", include_str!("themes/parameter.hbs"))
-        .unwrap();
+            .unwrap();
         Self {
             types: HashMap::new(),
             default_type_class: None,
             typst_command: String::from("typst"),
+            root: None,
             src: String::new(),
-            root: String::new(),
-            dir: String::new(),
+            cache: String::new(),
             handlebars: hb,
         }
     }
@@ -118,7 +104,7 @@ impl<'a> Config<'a> {
     pub fn from_config(config: &mdbook::Config, name: &str) -> Result<Self> {
         let mut cfg = Self {
             src: normalize_path(config.book.src.join("mdbook-typst-doc").to_str().unwrap()),
-            root: normalize_path(
+            cache: normalize_path(
                 config
                     .book
                     .src
@@ -129,8 +115,8 @@ impl<'a> Config<'a> {
             ..Default::default()
         };
 
-        if !Path::new(&cfg.root).exists() {
-            fs::create_dir(&cfg.root)?;
+        if !Path::new(&cfg.cache).exists() {
+            fs::create_dir(&cfg.cache)?;
         }
         if !Path::new(&cfg.src).exists() {
             fs::create_dir(&cfg.src)?;
@@ -139,6 +125,10 @@ impl<'a> Config<'a> {
         let Some(table) = config.get_preprocessor(name) else {
             return Ok(cfg);
         };
+
+        cfg.root = table
+            .get("root-arg")
+            .map(|v| v.as_str().unwrap().to_owned());
 
         if let Some(default_type_class) = table.get("default-type-class") {
             cfg.default_type_class = Some(default_type_class.as_str().unwrap().to_owned());

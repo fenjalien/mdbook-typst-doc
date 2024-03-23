@@ -19,6 +19,7 @@ command = "../target/debug/mdbook-typst-doc"
 
 
 # typst-command = "typst"
+# root-arg = ".."
 
 # The default css class to give to types that are not included in the table below
 default-type-class = "obj"
@@ -27,13 +28,21 @@ default-type-class = "obj"
 [preprocessor.typst-doc.types]
 int = {link = "https://typst.app/docs/reference/foundations/int/", class = "num"}
 float = {link = "https://typst.app/docs/reference/foundations/float/", class = "num"}
+angle = {link = "https://typst.app/docs/reference/layout/angle/", class = "num"}
 color = {class = "color", link = "https://typst.app/docs/reference/visualize/color/"}
+gradient = {class = "color", link = "https://typst.app/docs/reference/visualize/gradient/"}
 content = {link = "https://typst.app/docs/reference/foundations/content/", class = "con"}
 bool = {link = "https://typst.app/docs/reference/foundations/bool/", class = "bool"}
 str = {link  = "https://typst.app/docs/reference/foundations/str/", class = "str"}
 auto = {class = "keyword"}
 none = {class = "keyword"}
-custom = {class = "color", link = "/type_definition.html"}
+pattern = {link = "https://typst.app/docs/reference/visualize/pattern/"}
+stroke = {link = "https://typst.app/docs/reference/visualize/stroke/"}
+dictionary = {link = "https://typst.app/docs/reference/foundations/dictionary/"}
+array = {link = "https://typst.app/docs/reference/foundations/array/"}
+direction = {link = "https://typst.app/docs/reference/layout/direction/"}
+
+custom = {class = "color", link = "/mdbook-typst-doc/type_definition.html"}
 
 # Example templates for "typ" and "typc" code blocks.
 # "{{input}}" will be replaced by the text in the code block.
