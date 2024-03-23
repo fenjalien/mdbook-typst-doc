@@ -22,24 +22,31 @@
     gap: 0.5rem;
 }
 
-.parameter-description > .hljs {
+.parameter-description {
+    /* margin-top: 1em; */
     /* description indent */
     margin-inline-start: 2rem;
 }
 
+.parameter > p {
+    margin: 0;
+}
 
+.parameter > code {
+    background: none;
+}
 
 /* Types */
-a.type {
+.type > a {
     text-decoration: none;
     color: black;
 }
 
-a:hover.type {
+.type > a:hover {
     text-decoration: none;
 }
 
-a[href=""].type {
+.type > a[href=""] {
     pointer-events: none;
 }
 
@@ -47,7 +54,7 @@ h1 .type {
     font-size: inherit !important
 }
 
-h1 a.type {
+h1 .type >  a {
     pointer-events: none;
 }
 
