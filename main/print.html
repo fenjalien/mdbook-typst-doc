@@ -183,7 +183,7 @@
 <p><a href='https://typst.app/docs/reference/foundations/str/' class='typst type type-str'>str</a></p>
 <p><a href='' class='typst type type-keyword'>auto</a></p>
 <p><a href='' class='typst type type-keyword'>none</a></p>
-<p><a href='/type_definition.html' class='typst type type-color'>custom</a></p>
+<p><a href='/mdbook-typst-doc/type_definition.html' class='typst type type-color'>custom</a></p>
 <p><a href='' class='typst type type-obj'>other</a></p>
 <h1 id="typst-example"><a class="header" href="#typst-example">Typst Example</a></h1>
 <p><img src="src/../mdbook-typst-doc/efd8a.svg" alt="" /></p>
@@ -210,18 +210,57 @@ The first <span class="typ-pol">#</span><span class="typ-pol">count</span> numbe
 <span class="typ-punct">)</span><span class="typ-punct">)</span>
 
 </code></pre>
-<p><img src="src/../mdbook-typst-doc/af2d0.svg" alt="" /></p>
+<p><img src="src/../mdbook-typst-doc/78e41.svg" alt="" /></p>
 <pre><code><span class="typ-punct">[</span>hello world<span class="typ-punct">]</span>
 <span class="typ-key">if</span> <span class="typ-num">1</span> <span class="typ-op">==</span> <span class="typ-num">2</span> <span class="typ-punct">{</span>
   <span class="typ-punct">[</span>this doesn&#39;t feel right<span class="typ-punct">]</span>
 <span class="typ-punct">}</span> <span class="typ-key">else</span> <span class="typ-punct">{</span>
   <span class="typ-punct">[</span>this <span class="typ-emph">_does_</span> seem right<span class="typ-punct">]</span>
 <span class="typ-punct">}</span>
+
+<span class="typ-func">parbreak</span><span class="typ-punct">(</span><span class="typ-punct">)</span>
+
+<span class="typ-key">import</span> <span class="typ-str">&quot;/data.typ&quot;</span><span class="typ-punct">:</span> a
+
+a
+
+
 </code></pre>
 <pre><code>hello world
 </code></pre>
 <p>This text comes from the template</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-custom"><a class="header" href="#custom-custom">Custom <a href='/type_definition.html' class='typst type type-color'>custom</a></a></h1>
+<h1 id="parameter-definition"><a class="header" href="#parameter-definition">Parameter Definition</a></h1>
+<div>
+  <div class="parameter-details">
+    <div class="main-details">
+      <h4 id="value"><a class="header" href="#value">value:</a></h4>
+      <a href='' class='typst type type-keyword'>auto</a>
+       or 
+      <a href='' class='typst type type-keyword'>none</a>
+       or 
+      <a href='https://typst.app/docs/reference/foundations/float/' class='typst type type-num'>float</a>
+       or 
+      <a href='https://typst.app/docs/reference/foundations/int/' class='typst type type-num'>int</a>
+    </div>
+    <span class="parameter-default">Default: <code><span class="typ-key">auto</span></code></span>
+  </div>
+  <p class="parameter-description">
+Hello this is a description
+</p>
+</div>
+<div>
+  <div class="parameter-details">
+    <div class="main-details">
+      <h4 id="stuff"><a class="header" href="#stuff">stuff:</a></h4>
+      <a href='https://typst.app/docs/reference/foundations/array/' class='typst type type-obj'>array</a>
+    </div>
+    <span class="parameter-default">Default: <code><span class="typ-punct">(</span><span class="typ-num">1</span><span class="typ-punct">,</span><span class="typ-num">2</span><span class="typ-punct">,</span><span class="typ-num">3</span><span class="typ-punct">)</span></code></span>
+  </div>
+  <p class="parameter-description">
+Some other information that is totally useful.
+</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-custom"><a class="header" href="#custom-custom">Custom <a href='/mdbook-typst-doc/type_definition.html' class='typst type type-color'>custom</a></a></h1>
 <p>Lorem ipsum...</p>
 
                     </main>
