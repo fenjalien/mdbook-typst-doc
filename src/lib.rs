@@ -85,14 +85,9 @@ impl TypstPreprocessor {
                     // idk why I did this with a toml map, coul've used json
                     let mut data = Map::new();
                     for name in ["name", "types", "default", "description"] {
-                        data.insert(
-                            name.into(),
-                            captures
-                                .name(name)
-                                .map(|c| c.as_str())
-                                .unwrap_or_default()
-                                .into(),
-                        );
+                        if let Some(value) = captures.name(name) {
+                            data.insert(name.into(), value.as_str().into());
+                        }
                     }
 
                     if let Some(types) = data.get_mut("types") {

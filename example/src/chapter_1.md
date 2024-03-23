@@ -68,12 +68,16 @@ hello world
 
 # Parameter Definition
 <parameter-definition default="auto" name="value" types="auto,none,float,int">
-Hello this is a description
+Hello this is a description {{#type int}}
 </parameter-definition>
 
 <parameter-definition default="(1,2,3)" name="stuff" types="array">
 Some other information that is totally useful.
 </parameter-definition>
 
+
+<parameter-definition name="not-default" types="custom" default=""join me"">
+Some other information that is totally useful.
+</parameter-definition>
 
 

@@ -42,7 +42,7 @@ dictionary = {link = "https://typst.app/docs/reference/foundations/dictionary/"}
 array = {link = "https://typst.app/docs/reference/foundations/array/"}
 direction = {link = "https://typst.app/docs/reference/layout/direction/"}
 
-custom = {class = "color", link = "/mdbook-typst-doc/type_definition.html"}
+custom = {class = "color", link = "/type_definition.md"}
 
 # Example templates for "typ" and "typc" code blocks.
 # "{{input}}" will be replaced by the text in the code block.
