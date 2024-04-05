@@ -42,7 +42,7 @@ impl TypeConfig {
                     .map(|v| value_to_string(v).unwrap())
                     .unwrap_or_default(),
                 class,
-                use_link: true
+                use_link: true,
             })
         } else {
             bail!("Malformed table for TypeConfig: {}", toml)
@@ -97,7 +97,7 @@ impl<'a> Config<'a> {
                 name: key.to_owned(),
                 link: String::new(),
                 class: class.clone(),
-                use_link: true
+                use_link: true,
             })
         } else {
             bail!("Unknown type {}", key)
@@ -111,7 +111,9 @@ impl<'a> Config<'a> {
                 config
                     .book
                     .src
-                    .join("../mdbook-typst-doc")
+                    .parent()
+                    .unwrap()
+                    .join("mdbook-typst-doc")
                     .to_str()
                     .unwrap(),
             ),

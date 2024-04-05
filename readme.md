@@ -48,9 +48,9 @@ Rendered images are named after the first 5 characters of the md5 sum of their s
 ### Parameter Defintions
 Stylised and formatted parameter descriptions! It should be written as an html block like so:
 ```html
-<parameter-description name="name" types="int,float" default="default">
+<parameter-definition name="name" types="int,float" default="default">
 Some description
-</parameter-description>
+</parameter-definition>
 ```
 
 The `name` attribute and text inside the tags will be left alone. The `types` attribute will be split on commas and formatted to use the `{{#type ...}}` preprocessor. The `default` attribute will be highlighted.
