@@ -123,7 +123,7 @@ impl<'a> Config<'a> {
         };
 
         if let Some(html_config) = config.html_config() {
-            cfg.url = html_config.site_url.unwrap_or_default() + &cfg.src;
+            cfg.url = html_config.site_url.unwrap_or_default() + &cfg.cache;
         }
 
         if !Path::new(&cfg.cache).exists() {
