@@ -58,6 +58,7 @@ pub struct Config<'a> {
     pub root: Option<String>,
     pub src: String,
     pub cache: String,
+    pub url: String,
     pub handlebars: Handlebars<'a>,
 }
 
@@ -83,6 +84,7 @@ impl<'a> Default for Config<'a> {
             root: None,
             src: String::new(),
             cache: String::new(),
+            url: String::new(),
             handlebars: hb,
         }
     }
@@ -119,6 +121,10 @@ impl<'a> Config<'a> {
             ),
             ..Default::default()
         };
+
+        if let Some(html_config) = config.html_config() {
+            cfg.url = html_config.site_url.unwrap_or_default() + &cfg.src;
+        }
 
         if !Path::new(&cfg.cache).exists() {
             fs::create_dir(&cfg.cache)?;

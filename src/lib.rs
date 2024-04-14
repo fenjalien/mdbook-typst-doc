@@ -170,7 +170,7 @@ impl TypstPreprocessor {
 
                             sender.send(child).unwrap();
                         }
-                        data.insert("image", format!("![]({}/{name})", &config.cache));
+                        data.insert("image", format!("![]({}/{name})", &config.url));
                     }
                     config
                         .handlebars
